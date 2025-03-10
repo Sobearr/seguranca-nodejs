@@ -1,6 +1,5 @@
 const db = require('../models');
 const { hash } = require('bcryptjs');
-const { where } = require('sequelize');
 const uuid = require('uuid');
 
 class UsuarioService {
@@ -79,7 +78,7 @@ class UsuarioService {
     try {
       const numeroDeletados = await db.usuarios.destroy({ where: { id } });
       if (numeroDeletados !== 1) {
-        throw new Error(`Nao foi possivel deletar o usuario com id ${id}`);
+        throw new Error(`Nao foi possivel deletar o usuario com id ${id}.`);
       }
     } catch (err) {
       throw new Error(err.message);
