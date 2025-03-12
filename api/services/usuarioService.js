@@ -31,7 +31,26 @@ class UsuarioService {
   }
 
   async pegarTodos() {
-    return await db.usuarios.findAll();
+    return await db.usuarios.findAll({
+      include: [
+        {
+          model: db.roles,
+          as: 'usuario_roles',
+          attributes: ['id', 'nome', 'descricao'],
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: db.permissoes,
+          as: 'usuario_permissoes',
+          attributes: ['id', 'nome', 'descricao'],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
   }
 
   async pegarPorId(id) {
@@ -40,7 +59,27 @@ class UsuarioService {
     }
 
     try {
-      const usuario = await db.usuarios.findOne({ where: { id } });
+      const usuario = await db.usuarios.findOne({
+        include: [
+          {
+            model: db.roles,
+            as: 'usuario_roles',
+            attributes: ['id', 'nome', 'descricao'],
+            through: {
+              attributes: [],
+            },
+          },
+          {
+            model: db.permissoes,
+            as: 'usuario_permissoes',
+            attributes: ['id', 'nome', 'descricao'],
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+        where: { id },
+      });
       if (!usuario) {
         throw new Error(`Usuario com id ${id} nao encontrado.`);
       }
